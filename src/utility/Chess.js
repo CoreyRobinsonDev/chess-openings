@@ -36,7 +36,7 @@ export const fenDecoder = (fen) => {
     isWhiteQueensideCastleLegal: fenArray[2].includes('Q'),
     isBlackKingsideCastleLegal: fenArray[2].includes('k'),
     isBlackQueensideCastleLegal: fenArray[2].includes('q'),
-    enPassantTarget: fenArray[3] === '-' ? null : fenArray[3],
+    enPassantTarget: fenArray[3],
     is50MoveDraw: parseInt(fenArray[4]) === 100 ? true : false,
     numOfFullmoves: parseInt(fenArray[5])
   }
@@ -130,7 +130,7 @@ export const pieceData = (unicode) => {
 }
 
 // returns true if the move is legal else it returns false
-export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove) => {
+export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove, board) => {
   /*
   calculate on the position within the index
   pawn: bl+8/wh-8
@@ -150,6 +150,7 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove) =
   //adding checks for moves down
   const sub = targetIndex - homeIndex
   const add = targetIndex + homeIndex
+  const targetPiece = pieceData(board[targetIndex])
   switch (piece.name) {
     case 'pawn':
       if (piece.color === 'white') {
@@ -163,7 +164,9 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove) =
           return false
         }
         //checking for pawn capture
-        if (homeIndex - 9 === targetIndex || homeIndex - 7 === targetIndex) {
+        if (((homeIndex - 9 === targetIndex) && targetPiece !== null)) {
+          return true
+        } else if (((homeIndex - 7 === targetIndex) && targetPiece !== null)) {
           return true
         }
         return false
@@ -176,9 +179,11 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove) =
           } 
           return false
       }
-      if (homeIndex + 9 === targetIndex || homeIndex + 7 === targetIndex) {
-        return true
-      }
+      if (((homeIndex + 9 === targetIndex) && targetPiece !== null)) {
+          return true
+        } else if (((homeIndex + 7 === targetIndex) && targetPiece !== null)) {
+          return true
+        }
       return false
     case 'knight':
       // edge cases:
@@ -328,7 +333,7 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove) =
   }
 }
 export class Chess {
-  constructor(fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0') {
+  constructor(fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
     this.fen = fen
     this.board = []
     this.capturedPieces = []
@@ -338,7 +343,7 @@ export class Chess {
     this.isWhiteQueensideCastleLegal = true
     this.isBlackKingsideCastleLegal = true
     this.isBlackQueensideCastleLegal = true
-    this.enPassantTarget = null
+    this.enPassantTarget = '-'
     this.numOfHalfmoves = 0
     this.numOfFullmoves = 0
     this.is50MoveDraw = false
@@ -522,24 +527,7 @@ export class Chess {
     if (isBlackKingsideCastleLegal) fen += 'k' 
     if (isBlackQueensideCastleLegal) fen += 'q '
     //shows en passant target
-    fen += '-'
-    if (enPassantTarget.square === 'null') fen += '-'
-    if (enPassantTarget.square === 'a4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'a3')
-    if (enPassantTarget.square === 'b4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'b3')
-    if (enPassantTarget.square === 'c4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'c3')
-    if (enPassantTarget.square === 'd4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'd3')
-    if (enPassantTarget.square === 'e4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'e3')
-    if (enPassantTarget.square === 'f4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'f3')
-    if (enPassantTarget.square === 'g4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'g3')
-    if (enPassantTarget.square === 'h4' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'h3')
-    if (enPassantTarget.square === 'a5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'a6')
-    if (enPassantTarget.square === 'b5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'b6')
-    if (enPassantTarget.square === 'c5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'c6')
-    if (enPassantTarget.square === 'd5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'd6')
-    if (enPassantTarget.square === 'e5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'e6')
-    if (enPassantTarget.square === 'f5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'f6')
-    if (enPassantTarget.square === 'g5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'g6')
-    if (enPassantTarget.square === 'h5' && enPassantTarget.name === 'pawn') fen = fen.replace('-', 'h6')
+    fen += enPassantTarget
     //show number of half moves
     fen += ` ${numOfHalfmoves} `
     //show number of full moves

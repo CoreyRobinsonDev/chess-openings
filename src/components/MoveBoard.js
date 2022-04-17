@@ -1,17 +1,21 @@
 import { useSelector } from "react-redux"
 
-export const MoveBoard = () => {
-  const whiteMoves = useSelector(state => state.game.whiteMoves)
-  const blackMoves = useSelector(state => state.game.blackMoves)
+import { AnalysisBoard } from '../components/AnalysisBoard';
+import moveListCreator from "../utility/moveListCreator";
 
-  
+export const MoveBoard = () => {
+  const moves = useSelector(state => state.game.fullMoveList);
+  const openingName = useSelector(state => state.game.openingName)
+
   return (
     <div className='move-board'>
-      <h2>___________</h2>
-      <ul className='moves'>
-        <li className='white-moves'>{whiteMoves}</li>
-        <li className='black-moves'>{blackMoves}</li>
-      </ul>
+      <div className='opening-name-container'>
+        <h2 className='opening-name' title={openingName}>{openingName}</h2>
+      </div>
+      <AnalysisBoard/>
+      <div>
+        
+      </div>
     </div>
   )
 }

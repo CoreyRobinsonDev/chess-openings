@@ -21,14 +21,13 @@ const gameSlice = createSlice({
   initialState: {
     fen: chess.fen,
     board: chess.board,
-    analysis: {},
+    analysis: '',
     opening: '',
+    openingName: '',
     status: {
       analysis: '',
       opening: ''
     },
-    whiteMoves: [],
-    blackMoves: [],
     fullMoveList: [],
     fullMoveString: '',
     selectedPiecesSquare: [],
@@ -77,7 +76,7 @@ const gameSlice = createSlice({
         const homePiece = pieceData(state.board[homeIndex])
         const targetPiece = pieceData(state.board[targetIndex])
         // checks if move is legal
-        if (!(checkIfMoveLegal(homeIndex, targetIndex, homePiece, state.isWhiteToMove))) return
+        if (!(checkIfMoveLegal(homeIndex, targetIndex, homePiece, state.isWhiteToMove, state.board))) return
         
         //checks if white kingside castling is legal
         if (homePiece.name === 'king' && homeIndex === 60 && targetIndex === 62 && state.board[61] === null && state.board[62] === null && pieceData(state.board[63]).name === 'rook' && state.isWhiteKingsideCastleLegal) {
@@ -156,6 +155,29 @@ const gameSlice = createSlice({
           state.board[targetIndex] = state.board[homeIndex]
           state.board[homeIndex] = null
           state.wasPieceCaptured = true
+          //en passant
+        } else if (homePiece.name === 'pawn' && (homeIndex - 9 === targetIndex || homeIndex - 7 === targetIndex || homeIndex + 9 === targetIndex || homeIndex + 7 === targetIndex)) {
+          if (pieceData(state.board[targetIndex + 8]).name === 'pawn' && state.board[targetIndex - 8] === null) {
+            [state.board[homeIndex], state.board[targetIndex]] = [state.board[targetIndex], state.board[homeIndex]]
+            const capturedPiece = pieceData(state.board[targetIndex + 8])
+            state.board[targetIndex + 8] = null
+            state.capturedPieces.push(capturedPiece)
+            capturedPiece.color === 'white' 
+              ? state.material -= capturedPiece.value
+              : state.material += capturedPiece.value
+            state.wasPieceCaptured = true
+          }
+          if (pieceData(state.board[targetIndex - 8]).name === 'pawn' && state.board[targetIndex + 8] === null) {
+            [state.board[homeIndex], state.board[targetIndex]] = [state.board[targetIndex], state.board[homeIndex]]
+            const capturedPiece = pieceData(state.board[targetIndex - 8])
+            state.board[targetIndex - 8] = null
+            state.capturedPieces.push(capturedPiece)
+            capturedPiece.color === 'white' 
+              ? state.material -= capturedPiece.value
+              : state.material += capturedPiece.value
+            state.wasPieceCaptured = true
+          }
+          //all other moves
         } else {
           [state.board[homeIndex], state.board[targetIndex]] = [state.board[targetIndex], state.board[homeIndex]]
           state.wasPieceCaptured = false
@@ -188,7 +210,30 @@ const gameSlice = createSlice({
             }
           }
         }
-
+        //update en passant target
+        if (homePiece.name === 'pawn' && (homeIndex === 48 || homeIndex === 49 || homeIndex === 50 || homeIndex === 51 || homeIndex === 52 || homeIndex === 53 || homeIndex === 54 || homeIndex === 55 || homeIndex === 8 || homeIndex === 9 || homeIndex === 10 || homeIndex === 11 || homeIndex === 12 || homeIndex === 13 || homeIndex === 14 || homeIndex === 15)) {
+          if ((homeIndex - 16 === targetIndex || homeIndex + 16 === targetIndex) && ((pieceData(state.board[targetIndex - 1]).name === 'pawn' && pieceData(state.board[targetIndex - 1]).color !== homePiece.color) || (pieceData(state.board[targetIndex + 1]).name === 'pawn' && pieceData(state.board[targetIndex + 1]).color !== homePiece.color))) {
+            const square = payload[0]
+            if (square === 'a4') state.enPassantTarget = 'a3'
+            if (square === 'b4') state.enPassantTarget = 'b3'
+            if (square === 'c4') state.enPassantTarget = 'c3'
+            if (square === 'd4') state.enPassantTarget = 'd3'
+            if (square === 'e4') state.enPassantTarget = 'e3'
+            if (square === 'f4') state.enPassantTarget = 'f3'
+            if (square === 'g4') state.enPassantTarget = 'g3'
+            if (square === 'h4') state.enPassantTarget = 'h3'
+            if (square === 'a5') state.enPassantTarget = 'a6'
+            if (square === 'b5') state.enPassantTarget = 'b6'
+            if (square === 'c5') state.enPassantTarget = 'c6'
+            if (square === 'd5') state.enPassantTarget = 'd6'
+            if (square === 'e5') state.enPassantTarget = 'e6'
+            if (square === 'f5') state.enPassantTarget = 'f6'
+            if (square === 'g5') state.enPassantTarget = 'g6'
+            if (square === 'h5') state.enPassantTarget = 'h6'
+          }
+        } else {
+          state.enPassantTarget = '-'
+        }
         //incrementing moves
         state.numOfHalfmoves++
         if (selectedPiece.name === 'pawn' || state.wasPieceCaptured === true) {
@@ -202,7 +247,8 @@ const gameSlice = createSlice({
         state.fullMoveList.push({
           name: selectedPiece.name,
           color: selectedPiece.color,
-          square: payload[0]
+          square: payload[0],
+          abbreviation: selectedPiece.abbreviation
         })
         state.fullMoveString += state.selectedPiecesSquare[0] + payload[0] + ','
       }
@@ -223,7 +269,7 @@ const gameSlice = createSlice({
           state.isWhiteQueensideCastleLegal,
           state.isBlackKingsideCastleLegal,
           state.isBlackQueensideCastleLegal,
-          state.fullMoveList[state.fullMoveList.length - 1],
+          state.enPassantTarget,
           state.numOfHalfmoves,
           state.numOfFullmoves
         );
@@ -262,7 +308,7 @@ const gameSlice = createSlice({
     },
     [setAnalysis.fulfilled]: (state, action) => {
       state.status.analysis = 'fulfilled'
-      state.analysis = action.payload
+      state.analysis = action.payload.pvs ? action.payload.pvs : '...'
     },
     [setAnalysis.rejected]: (state, action) => {
       state.status.analysis = 'rejected'
@@ -273,6 +319,7 @@ const gameSlice = createSlice({
     [getOpening.fulfilled]: (state, action) => {
       state.status.opening = 'fulfilled'
       state.opening = action.payload
+      state.openingName = action.payload.opening.name
     },
     [getOpening.rejected]: (state, action) => {
       state.status.opening = 'rejected'
