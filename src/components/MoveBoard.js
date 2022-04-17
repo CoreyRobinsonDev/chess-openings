@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux"
-
 import { AnalysisBoard } from '../components/AnalysisBoard';
-import moveListCreator from "../utility/moveListCreator";
+// import moveListCreator from "../utility/moveListCreator";
 
 export const MoveBoard = () => {
-  const moves = useSelector(state => state.game.fullMoveList);
+  // const moves = useSelector(state => state.game.fullMoveList);
   const openingName = useSelector(state => state.game.openingName)
 
   return (

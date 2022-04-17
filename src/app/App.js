@@ -9,7 +9,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(setAnalysis())
-  }, [])
+  }, [dispatch])
   return (
   <main>
     <article className='gamespace'>
