@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,700;1,300&display=swap');
+:root {
+  /*
+  chess.com colors:
+    #769656
+    #eeeed2
+  */
+  --blackColor: rgb(125 135 150);
+  --whiteColor: rgb(232 235 239);
+}
+html{
+  box-sizing: border-box;
+  font-size: 100%
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  background-image: url(https://images.unsplash.com/photo-1604147706283-d7119b5b822c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDh8fGJhY2tncm91bmR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60);
+  background-blend-mode: multiply;
+  font-family: 'Open Sans', sans-serif;
+}
+li {
+  list-style-type: none;
+}
+
+main{
+  display: flex;
+  width: 100%;
+  margin: 2rem;
+  background:rgb(32, 32, 32);
+  border-radius: 10px;
+}
+.gamespace {
+  display: flex;
+}
+
+/*CHESSBOARD*/
+.board{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem;
+  width: 640px;
+  height: 640px;
+  border-radius: 5px;
+  box-shadow: 0 10px 15px -3px black,0 4px 6px -2px black;
+}
+.piece {
+  display: flex;
+  justify-content: center;
+}
+.piece img{
+  width: 50px;
+  height: auto;
+}
+.piece .whitepawn {
+  width: 44px;
+  height: auto;
+}
+.piece .blackpawn {
+  width: 68px;
+  height: auto;
+}
+.piece .whitebishop {
+  width: 78px;
+  height: auto;
+}
+.piece .blackbishop {
+  width: 56px;
+  height: auto;
+}
+.piece .blackking, .piece .whiteking {
+  width: 70px;
+  height: auto;
+}
+.piece .whitequeen, .piece .blackqueen {
+  width: 66px;
+  height: auto;
+}
+.piece .blackrook, .piece .whiterook {
+  width: 66px;
+  height: auto;
+}
+.piece .whiteknight {
+  width: 56px;
+  height: auto;
+}
+.piece .blackknight {
+  width: 55px;
+  height: auto;
+}
+.square-li{
+  width: 80px;
+  height: 80px;
+}
+.square{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  font-size: 5rem;
+}
+.a2,.a4,.a6,.a8,.b1,.b3,.b5,.b7,.c2,.c4,.c6,.c8,.d1,.d3,.d5,.d7,.e2,.e4,.e6,.e8,.f1,.f3,.f5,.f7,.g2,.g4,.g6,.g8,.h1,.h3,.h5,.h7{
+  background: var(--whiteColor);
+}
+.a1,.a3,.a5,.a7,.b2,.b4,.b6,.b8,.c1,.c3,.c5,.c7,.d2,.d4,.d6,.d8,.e1,.e3,.e5,.e7,.f2,.f4,.f6,.f8,.g1,.g3,.g5,.g7,.h2,.h4,.h6,.h8{
+  background: var(--blackColor);
+}
+.a1 {
+  border-radius: 0 0 0 5px;
+}
+.a8 {
+  border-radius: 5px 0 0 0;
+}
+.h1 {
+  border-radius: 0 0 5px 0;
+}
+.h8 {
+  border-radius: 0 5px 0 0;
+}
+.files {
+  position: absolute;
+  top: 58px;
+  left: 67px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.ranks {
+  position: absolute;
+  bottom: 56px;
+  right: 68px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+#labela1, #labelc1, #labele1, #labelg1, #labela3, #labela5, #labela7 {
+  color: var(--whiteColor)
+}
+#labela2, #labela4, #labela6, #labela8, #labelb1, #labeld1, #labelf1, #labelh1 {
+  color: var(--blackColor)
+}
+#labelg1 {
+  top: 55px;
+  left: 68px;
+}
+
+/*MOVE BOARD*/
+.move-board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgb(65, 64, 64);
+  color: white;
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 10px 15px -3px black,0 4px 6px -2px black;
+}
+.moves {
+  position: absolute;
+  top: 3.5rem;
+  left: 2rem;
+  display: grid;
+  grid-template: 10rem/ 3fr 1fr;
+}
+.white-moves {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1rem;
+  grid-area: 1/1/2/2
+}
+.black-moves {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1rem;
+  grid-area: 1/2/2/3
+}
