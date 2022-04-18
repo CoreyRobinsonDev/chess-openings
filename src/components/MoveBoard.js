@@ -5,6 +5,7 @@ import { AnalysisBoard } from '../components/AnalysisBoard';
 export const MoveBoard = () => {
   // const moves = useSelector(state => state.game.fullMoveList);
   const openingName = useSelector(state => state.game.openingName)
+  const moveString = useSelector(state => state.game.moveString)
 
   return (
     <div className='move-board'>
@@ -12,8 +13,8 @@ export const MoveBoard = () => {
         <h2 className='opening-name' title={openingName}>{openingName}</h2>
       </div>
       <AnalysisBoard/>
-      <div>
-        
+      <div className='moves-container'>
+        {moveString}
       </div>
     </div>
   )

@@ -537,4 +537,34 @@ export class Chess {
     fen += numOfFullmoves
     return fen
   }
+  //takes an array of piece objects and returns a string of moves
+  printMoves(moves, fullMoveList, fullMoveString, numOfFullmoves = this.numOfFullmoves) {
+    const lastMove = fullMoveString.slice(-5, -1)
+    let move = ''
+    let number = ''
+    if (moves.slice(-3, -2) === ' ' || moves.slice(-4, -3) === ' ') {
+      number = ` ${numOfFullmoves}.`
+    } else if (moves.slice(-3, -2) === '.' || moves.slice(-4, -3) === '.') {
+      number = ` `
+    } else if (moves.slice(-6, -5) === ' ') { 
+      number = ` ${numOfFullmoves}.`
+    } else if (moves.slice(-6, -5) === '.') {
+      number = ` `
+    } else {
+      number = '1.'
+    }
+    
+    move = `${fullMoveList[fullMoveList.length-1].abbreviation}${fullMoveList[fullMoveList.length-1].square}`
+    moves += `${number}${move}`
+    if (lastMove === 'e1g1') {
+        moves = moves.slice(0, -3) + 'O-O'
+      } else if (lastMove === 'e1c1') {
+        moves = moves.slice(0, -3) + 'O-O-O'
+      } else if (lastMove === 'e8g8') {
+        moves = moves.slice(0, -3) + 'O-O'
+      } else if (lastMove === 'e8c8') {
+        moves = moves.slice(0, -3) + 'O-O-O'
+      } 
+    return moves
+  }
 }

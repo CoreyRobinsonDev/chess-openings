@@ -178,33 +178,25 @@ main{
   width: 100%;
   min-height: 2rem;
   border: 1px solid;
+  margin-bottom: 1rem;
 }
 .opening-name {
   font-weight: normal;
   font-family: 'Beau Rivage', cursive;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
-.moves {
-  position: absolute;
-  top: 3.5rem;
-  left: 2rem;
-  display: grid;
-  grid-template: 10rem/ 3fr 1fr;
+.moves-container {
+  text-align: left;
+  align-self: flex-start;
+  flex: auto;
+  margin-top: 1rem;
+  padding: .2rem;
+  width: 100%;
+  height: 60%;
+  font-weight: bold;
+  border: 1px solid;
 }
-.white-moves {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 1rem;
-  grid-area: 1/1/2/2
-}
-.black-moves {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 1rem;
-  grid-area: 1/2/2/3
-}
+
 /*ANALYSIS BOARD*/
 .analysis-container {
   display: flex;

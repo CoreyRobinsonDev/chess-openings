@@ -30,6 +30,8 @@ const gameSlice = createSlice({
     },
     fullMoveList: [],
     fullMoveString: '',
+    moveString: '',
+    lastMove: '',
     selectedPiecesSquare: [],
     selectedPieces: [],
     capturedPieces: chess.capturedPieces,
@@ -93,7 +95,14 @@ const gameSlice = createSlice({
           state.isWhiteToMove = !state.isWhiteToMove
           state.isWhiteKingsideCastleLegal = false
           state.isWhiteQueensideCastleLegal = false
-          
+          //updating the move list
+          state.fullMoveList.push({
+            name: selectedPiece.name,
+            color: selectedPiece.color,
+            square: payload[0],
+            abbreviation: selectedPiece.abbreviation
+          })
+          state.fullMoveString += state.selectedPiecesSquare[0] + payload[0] + ','
           return
         }
         //checks if white queenside castling is legal
@@ -111,7 +120,14 @@ const gameSlice = createSlice({
           state.isWhiteToMove = !state.isWhiteToMove
           state.isWhiteKingsideCastleLegal = false
           state.isWhiteQueensideCastleLegal = false
-          
+          //updating the move list
+          state.fullMoveList.push({
+            name: selectedPiece.name,
+            color: selectedPiece.color,
+            square: payload[0],
+            abbreviation: selectedPiece.abbreviation
+          })
+          state.fullMoveString += state.selectedPiecesSquare[0] + payload[0] + ','
           return
         }
         //checks if black kingside castling is legal
@@ -129,6 +145,14 @@ const gameSlice = createSlice({
           state.isWhiteToMove = !state.isWhiteToMove
           state.isBlackKingsideCastleLegal = false
           state.isBlackQueensideCastleLegal = false
+          //updating the move list
+          state.fullMoveList.push({
+            name: selectedPiece.name,
+            color: selectedPiece.color,
+            square: payload[0],
+            abbreviation: selectedPiece.abbreviation
+          })
+          state.fullMoveString += state.selectedPiecesSquare[0] + payload[0] + ','
           return
         }
         //checks if black queenside castling is legal
@@ -146,6 +170,14 @@ const gameSlice = createSlice({
           state.isWhiteToMove = !state.isWhiteToMove
           state.isBlackKingsideCastleLegal = false
           state.isBlackQueensideCastleLegal = false
+          //updating the move list
+          state.fullMoveList.push({
+            name: selectedPiece.name,
+            color: selectedPiece.color,
+            square: payload[0],
+            abbreviation: selectedPiece.abbreviation
+          })
+          state.fullMoveString += state.selectedPiecesSquare[0] + payload[0] + ','
           return
         }
 
@@ -265,6 +297,7 @@ const gameSlice = createSlice({
         state.selectedPiecesSquare.pop()
       }
       //updates the fen string
+      //updates move string
       if (state.selectedPiecesSquare.length === 2) {
         state.fen = chess.updateFen(
           state.board,
@@ -277,6 +310,8 @@ const gameSlice = createSlice({
           state.numOfHalfmoves,
           state.numOfFullmoves
         );
+        state.moveString = chess.printMoves(state.moveString, state.fullMoveList, state.fullMoveString, state.numOfFullmoves)
+        state.lastMove = state.fullMoveString.slice(-5, -1)
       }
       
     },
