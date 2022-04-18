@@ -157,7 +157,7 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove, b
         if (homeIndex - 8 === targetIndex) {
           return true
           // allowing the pawn to move 2 squares on 1st move
-        } else if (homeIndex === 48 || homeIndex === 49 || homeIndex === 50 || homeIndex === 51 || homeIndex === 52 || homeIndex === 53 || homeIndex === 54 || homeIndex === 55) {
+        } else if ((homeIndex === 48 || homeIndex === 49 || homeIndex === 50 || homeIndex === 51 || homeIndex === 52 || homeIndex === 53 || homeIndex === 54 || homeIndex === 55) && (homeIndex - 9 !== targetIndex && homeIndex - 7 !== targetIndex)) {
           if (homeIndex - 16 === targetIndex) {
             return true
           } 
@@ -173,7 +173,7 @@ export const checkIfMoveLegal = (homeIndex, targetIndex, piece, isWhiteToMove, b
       }
       if (homeIndex + 8 === targetIndex) {
         return true
-      } else if (homeIndex === 8 || homeIndex === 9 || homeIndex === 10 || homeIndex === 11 || homeIndex === 12 || homeIndex === 13 || homeIndex === 14 || homeIndex === 15) {
+      } else if ((homeIndex === 8 || homeIndex === 9 || homeIndex === 10 || homeIndex === 11 || homeIndex === 12 || homeIndex === 13 || homeIndex === 14 || homeIndex === 15) && (homeIndex + 9 !== targetIndex && homeIndex + 7 !== targetIndex) ) {
           if (homeIndex + 16 === targetIndex) {
             return true
           } 
@@ -515,6 +515,9 @@ export class Chess {
           numOfNull = 0;
         }
         fen += '/';
+      }
+      if (i === 63 && numOfNull > 0) {
+        fen += numOfNull;
       }
     }
     //shows whos turn to move

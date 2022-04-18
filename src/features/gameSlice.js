@@ -87,6 +87,7 @@ const gameSlice = createSlice({
 
           //incrementing moves
           state.totalMoves++
+          state.numOfHalfmoves++
           if (!(state.totalMoves % 2)) state.numOfFullmoves++
           //setting whos move it is
           state.isWhiteToMove = !state.isWhiteToMove
@@ -104,6 +105,7 @@ const gameSlice = createSlice({
 
           //incrementing moves
           state.totalMoves++
+          state.numOfHalfmoves++
           if (!(state.totalMoves % 2)) state.numOfFullmoves++
           //setting whos move it is
           state.isWhiteToMove = !state.isWhiteToMove
@@ -121,6 +123,7 @@ const gameSlice = createSlice({
 
           //incrementing moves
           state.totalMoves++
+          state.numOfHalfmoves++
           if (!(state.totalMoves % 2)) state.numOfFullmoves++
           //setting whos move it is
           state.isWhiteToMove = !state.isWhiteToMove
@@ -137,6 +140,7 @@ const gameSlice = createSlice({
 
           //incrementing moves
           state.totalMoves++
+          state.numOfHalfmoves++
           if (!(state.totalMoves % 2)) state.numOfFullmoves++
           //setting whos move it is
           state.isWhiteToMove = !state.isWhiteToMove
@@ -304,25 +308,25 @@ const gameSlice = createSlice({
   },
   extraReducers: {
     [setAnalysis.pending]: (state, action) => {
-      state.status.analysis = 'pending'
+      state.status.analysis = action.meta.requestStatus
     },
     [setAnalysis.fulfilled]: (state, action) => {
-      state.status.analysis = 'fulfilled'
+      state.status.analysis = action.meta.requestStatus
       state.analysis = action.payload.pvs ? action.payload.pvs : '...'
     },
     [setAnalysis.rejected]: (state, action) => {
-      state.status.analysis = 'rejected'
+      state.status.analysis = action.meta.requestStatus
     },
     [getOpening.pending]: (state, action) => {
-      state.status.opening = 'pending'
+      state.status.opening = action.meta.requestStatus
     },
     [getOpening.fulfilled]: (state, action) => {
-      state.status.opening = 'fulfilled'
+      state.status.opening = action.meta.requestStatus
       state.opening = action.payload
       state.openingName = action.payload.opening.name
     },
     [getOpening.rejected]: (state, action) => {
-      state.status.opening = 'rejected'
+      state.status.opening = action.meta.requestStatus
     }
   }
 })

@@ -7,8 +7,6 @@ export const Square = ({ squareData }) => {
   const dispatch = useDispatch()
   const position = useSelector(state => state.game.board)
   
-
-  
   const squareSelect = () => {
     dispatch(movePiece(squareData))
     dispatch(selectPiece(squareData))
