@@ -5,6 +5,7 @@ import { Board } from '../components/Board';
 import { MoveBoard } from '../components/MoveBoard';
 import { WinrateBar } from '../components/WinrateBar';
 import { setAnalysis } from '../features/gameSlice';
+import { TopGamesContainer } from '../components/TopGamesContainer';
 
 const App = () => {
   const dispatch = useDispatch()
@@ -24,6 +25,7 @@ const App = () => {
           ? <WinrateBar white={openingData.white} black={openingData.black} draws={openingData.draws} />
           : ''
         }
+        <TopGamesContainer />
       </article>
       
     </main>
