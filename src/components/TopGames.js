@@ -2,6 +2,8 @@ import { useSelector } from "react-redux"
 
 export const TopGames = ({gamesNum}) => {
   const topGames = useSelector(state => state.game.opening.topGames)
+  if (!topGames) return
+  if (typeof topGames[gamesNum] === 'undefined') return
   const uci = topGames ? topGames[gamesNum].uci : ''
   const winner = topGames ? topGames[gamesNum].winner : ''
   const whiteName = topGames ? topGames[gamesNum].white.name : ''
