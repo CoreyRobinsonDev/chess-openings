@@ -14,6 +14,13 @@ export const TopGamesContainer = () => {
       <TopGames gamesNum={5} />
       <TopGames gamesNum={6} />
       <TopGames gamesNum={7} />
+      <TopGames gamesNum={8} />
+      <TopGames gamesNum={9} />
+      <TopGames gamesNum={10} />
+      <TopGames gamesNum={11} />
+      <TopGames gamesNum={12} />
+      <TopGames gamesNum={13} />
+      <TopGames gamesNum={14} />
     </div>
   </>
 }

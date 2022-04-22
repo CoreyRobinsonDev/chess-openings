@@ -24,8 +24,6 @@ body {
   display: flex;
   justify-content: center;
   height: 100vh;
-  background-image: url(https://images.unsplash.com/photo-1604147706283-d7119b5b822c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDh8fGJhY2tncm91bmR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60);
-  background-blend-mode: multiply;
   font-family: 'Open Sans', sans-serif;
 }
 li {
@@ -206,12 +204,11 @@ main{
   width: 120%;
   height: 4rem;
   font-size: .9rem;
-  padding: .1rem;
   background:rgb(32, 32, 32);
 }
 .lines {
   display: flex;
-  height: 1.2rem;
+  height: 34%;
   overflow: hidden;
 }
 .caps {
@@ -272,6 +269,7 @@ main{
 .top-game {
   display: grid;
   grid-template: 1fr / 10rem 12rem;
+  width: 47.75%;
   margin: .4rem .8rem .4rem 0;
   padding: .4rem;
   border: 1px solid;

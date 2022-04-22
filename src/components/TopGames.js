@@ -25,7 +25,8 @@ export const TopGames = ({gamesNum}) => {
     result = '1⁄2-1⁄2'
   }
   if (topGames) return typeof topGames[gamesNum] !== 'undefined'
-    ? <div className='top-game'>
+    ? <div className='top-game' style={winner === 'white' ?  { background: 'white', color: 'black', border: '1px solid black' } : winner === 'black' ? { background: 'black', color: 'white', border: '1px solid white' } : { background: 'rgb(65,64,64)', color: 'white', border: '1px solid white' }
+}>
       
       <p className='game-results'>{resultsMessage}</p>
       <div className='top-game-info'>
